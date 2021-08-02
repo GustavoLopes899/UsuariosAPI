@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace Lixo
 {
@@ -19,6 +23,7 @@ namespace Lixo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            this.ConfigurarServicosSwagger(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -27,6 +32,11 @@ namespace Lixo
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Usuarios API");
+                });
             }
             else
             {
@@ -46,6 +56,28 @@ namespace Lixo
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+        }
+
+        private void ConfigurarServicosSwagger(IServiceCollection services)
+        {
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Usuarios API",
+                    Version = "v1",
+                    Description = "ASP.Net Core API para cadastro de usuários e seus dependentes",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Gustavo Lopes",
+                        Email = "GustavoLopes899@gmail.com",
+                        Url = new Uri("https://github.com/GustavoLopes899"),
+                    }
+                });
+                string arquivoXml = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                string pastaXml = Path.Combine(AppContext.BaseDirectory, arquivoXml);
+                options.IncludeXmlComments(pastaXml);
             });
         }
     }
