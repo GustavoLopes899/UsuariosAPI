@@ -1,20 +1,28 @@
+using Backend.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server.Features;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
 using System.Reflection;
 
-namespace Lixo
+namespace Backend
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment env)
         {
-            Configuration = configuration;
+            IConfigurationBuilder builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -22,12 +30,21 @@ namespace Lixo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddDbContext<MeuDbContext>(options =>
+            {
+                string tns = Configuration.GetConnectionString("DefaultConnection");
+                string usuario = Configuration["ConnectionStrings:User"];
+                string senha = Configuration["ConnectionStrings:Password"];
+                options.UseOracle($"User Id={usuario};Password={senha};Data Source={tns};");
+            });
+
             this.ConfigurarServicosSwagger(services);
+            services.AddCors();
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -38,24 +55,26 @@ namespace Lixo
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Usuarios API");
                 });
             }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
 
+            ILogger logger = loggerFactory.CreateLogger<Startup>();
+            FeatureCollection features = app.Properties["server.Features"] as FeatureCollection;
+            logger.LogInformation("Servidor iniciado com sucesso!");
+            foreach (string endereco in features.Get<IServerAddressesFeature>().Addresses)
+            {
+                logger.LogInformation("Escutando em: " + endereco);
+            }
+
+            app.UseHttpsRedirection();
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapDefaultControllerRoute();
             });
         }
 
