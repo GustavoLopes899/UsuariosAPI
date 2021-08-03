@@ -1,4 +1,5 @@
 using Backend.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server.Features;
@@ -8,10 +9,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text;
 
 namespace Backend
 {
@@ -38,6 +42,7 @@ namespace Backend
                 options.UseOracle($"User Id={usuario};Password={senha};Data Source={tns};");
             });
 
+            this.ConfigurarServicosJWT(services);
             this.ConfigurarServicosSwagger(services);
             services.AddCors();
             services.AddControllers();
@@ -65,7 +70,9 @@ namespace Backend
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseRouting();
+            app.UseAuthorization();
 
             app.UseCors(x => x
                 .AllowAnyOrigin()
@@ -75,6 +82,29 @@ namespace Backend
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+            });
+        }
+
+        private void ConfigurarServicosJWT(IServiceCollection services)
+        {
+            string secret = Configuration["JWT:Secret"];
+            byte[] chave = Encoding.ASCII.GetBytes(secret);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(chave),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
             });
         }
 
@@ -97,6 +127,31 @@ namespace Backend
                 string arquivoXml = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 string pastaXml = Path.Combine(AppContext.BaseDirectory, arquivoXml);
                 options.IncludeXmlComments(pastaXml);
+
+                IDictionary<string, IEnumerable<string>> security = new Dictionary<string, IEnumerable<string>>
+                {
+                    {"Bearer", new string[] { }},
+                };
+
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "Cabeçalho de autorização JWT usando esquema Bearer",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Id = "Bearer",
+                                Type = ReferenceType.SecurityScheme
+                            }
+                        }, new List<string>()
+                    }
+                });
             });
         }
     }
