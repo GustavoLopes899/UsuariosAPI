@@ -38,7 +38,7 @@ namespace Backend.Controllers
         /// <remarks>
         /// No body da requisição é necessário apenas passar o usuário e senha. Exemplo da requisição:
         ///
-        ///     POST /conta/autenticar
+        ///     POST /login/autenticar
         ///     {
         ///        "usuario": "usuario",
         ///        "senha": "senha"
