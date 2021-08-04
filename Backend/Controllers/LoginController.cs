@@ -76,11 +76,11 @@ namespace Backend.Controllers
         [AllowAnonymous]
         public IActionResult Status()
         {
-            if (User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated)
             {
-                string nomePermissao = User.Claims.FirstOrDefault(p => p.Type.Equals(ClaimTypes.Role))?.Value;
+                string nomePermissao = this.User.Claims.FirstOrDefault(p => p.Type.Equals(ClaimTypes.Role))?.Value;
                 Permissoes permissao = this.contexto.Permissoes.FirstOrDefault(p => p.Nome.Equals(nomePermissao));
-                return this.Ok(new { usuario = User.Identity.Name, permissao });
+                return this.Ok(new { usuario = this.User.Identity.Name, permissao });
             }
             else
             {

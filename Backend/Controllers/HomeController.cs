@@ -17,7 +17,16 @@ namespace Backend.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
-            return this.Ok("Página inicial");
+            string status;
+            if (this.User.Identity.IsAuthenticated)
+            {
+                status = $"Usuário autenticado, seja bem vindo {this.User.Identity.Name}";
+            }
+            else
+            {
+                status = $"Usuário não autenticado. É necessário autenticar-se para utilizar a API.";
+            }
+            return this.Ok(new { info = "Página inicial", status });
         }
     }
 }

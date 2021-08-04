@@ -26,7 +26,7 @@ namespace Backend
             IConfigurationBuilder builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-            Configuration = builder.Build();
+            this.Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -36,9 +36,9 @@ namespace Backend
         {
             services.AddDbContext<MeuDbContext>(options =>
             {
-                string tns = Configuration.GetConnectionString("DefaultConnection");
-                string usuario = Configuration["ConnectionStrings:User"];
-                string senha = Configuration["ConnectionStrings:Password"];
+                string tns = this.Configuration.GetConnectionString("DefaultConnection");
+                string usuario = this.Configuration["ConnectionStrings:User"];
+                string senha = this.Configuration["ConnectionStrings:Password"];
                 options.UseOracle($"User Id={usuario};Password={senha};Data Source={tns};");
             });
 
@@ -87,7 +87,7 @@ namespace Backend
 
         private void ConfigurarServicosJWT(IServiceCollection services)
         {
-            string secret = Configuration["JWT:Secret"];
+            string secret = this.Configuration["JWT:Secret"];
             byte[] chave = Encoding.ASCII.GetBytes(secret);
             services.AddAuthentication(x =>
             {
