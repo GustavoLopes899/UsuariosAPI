@@ -112,7 +112,8 @@ namespace Backend.Controllers
             }
             catch (Exception ex)
             {
-                mensagem = $"Exceção: {(ex.InnerException != null ? ex.InnerException.Message : ex.Message)}".Replace('\n', ' ');
+                mensagem = Logger.TrataMensagemExcecao(ex);
+                Logger.GravarLog(mensagem);
                 this.logger.LogError(mensagem);
                 return this.BadRequest(new { mensagem });
             }
@@ -173,7 +174,8 @@ namespace Backend.Controllers
             }
             catch (Exception ex)
             {
-                mensagem = $"Exceção: {(ex.InnerException != null ? ex.InnerException.Message : ex.Message)}".Replace('\n', ' ');
+                mensagem = Logger.TrataMensagemExcecao(ex);
+                Logger.GravarLog(mensagem);
                 this.logger.LogError(mensagem);
                 return this.BadRequest(new { mensagem });
             }
@@ -206,7 +208,8 @@ namespace Backend.Controllers
             }
             catch (Exception ex)
             {
-                string mensagem = $"Exceção: {(ex.InnerException != null ? ex.InnerException.Message : ex.Message)}".Replace('\n', ' ');
+                string mensagem = Logger.TrataMensagemExcecao(ex);
+                Logger.GravarLog(mensagem);
                 this.logger.LogError(mensagem);
                 return this.BadRequest(new { mensagem });
             }
