@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -22,5 +23,8 @@ namespace Backend.Models
 
         [Column("ATIVO")]
         public bool Ativo { get; set; }
+
+        [NotMapped]
+        public virtual List<Usuarios> Dependentes { get; set; }
     }
 }

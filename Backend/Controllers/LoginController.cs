@@ -56,9 +56,9 @@ namespace Backend.Controllers
             Cadastradores autenticador = this.contexto.Cadastradores.Include(c => c.Permissao).FirstOrDefault(a => a.Usuario.Equals(modelo.Usuario) && a.Senha.Equals(modelo.Senha));
             if (autenticador == null)
             {
-                string mensagemErro = "Usuário ou senha inválidos";
-                this.logger.LogDebug(mensagemErro);
-                return this.NotFound(new { mensagem = mensagemErro });
+                string mensagem = "Usuário ou senha inválidos";
+                this.logger.LogWarning(mensagem);
+                return this.NotFound(new { mensagem });
             }
             string token = Token.GerarToken(autenticador, chave);
             this.logger.LogInformation("Login efetuado com sucesso.");

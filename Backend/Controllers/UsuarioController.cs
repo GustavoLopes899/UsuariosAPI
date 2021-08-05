@@ -107,6 +107,7 @@ namespace Backend.Controllers
                 else
                 {
                     mensagem = "CPF inválido";
+                    this.logger.LogWarning(mensagem);
                     return this.BadRequest(new { mensagem });
                 }
             }
@@ -170,7 +171,9 @@ namespace Backend.Controllers
                     this.logger.LogInformation(mensagem);
                     return this.Ok(new { mensagem });
                 }
-                return this.NotFound(new { mensagem = "Usuário não encontrado!" });
+                mensagem = "Usuário não encontrado!";
+                this.logger.LogWarning(mensagem);
+                return this.NotFound(new { mensagem });
             }
             catch (Exception ex)
             {
@@ -195,6 +198,7 @@ namespace Backend.Controllers
         [AuthorizeByRole(new string[] { Constantes.Administrador, Constantes.Editor })]
         public IActionResult RemoverUsuario([FromQuery(Name = "cpf")] string cpf)
         {
+            string mensagem;
             try
             {
                 Usuarios usuario = this.contexto.Usuarios.FirstOrDefault(u => u.CPF.Equals(cpf));
@@ -202,13 +206,15 @@ namespace Backend.Controllers
                 {
                     this.contexto.Usuarios.Remove(usuario);
                     this.contexto.SaveChanges();
-                    return this.Ok(new { mensagem = "Usuário removido com sucesso!" });
+                    mensagem = "Usuário removido com sucesso!";
+                    return this.Ok(new { mensagem });
                 }
-                return this.NotFound(new { mensagem = "Usuário não encontrado!" });
+                mensagem = "Usuário não encontrado!";
+                return this.NotFound(new { mensagem });
             }
             catch (Exception ex)
             {
-                string mensagem = Logger.TrataMensagemExcecao(ex);
+                mensagem = Logger.TrataMensagemExcecao(ex);
                 Logger.GravarLog(mensagem);
                 this.logger.LogError(mensagem);
                 return this.BadRequest(new { mensagem });
