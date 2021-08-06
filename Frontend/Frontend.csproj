@@ -6,4 +6,14 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Ferramentas\Ferramentas.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Propriedades\Imagens\Fundo.png" />
+    <Resource Include="Propriedades\Imagens\Senha.png" />
+    <Resource Include="Propriedades\Imagens\Usuario.png" />
+  </ItemGroup>
+
 </Project>
