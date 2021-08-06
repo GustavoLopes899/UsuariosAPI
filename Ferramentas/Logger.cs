@@ -10,20 +10,25 @@ namespace Ferramentas
 
         public static string TrataMensagemExcecao(Exception excecao)
         {
-            while (excecao?.InnerException != null)
+            while (excecao.InnerException != null)
             {
                 excecao = excecao.InnerException;
             }
             return excecao.Message.Replace('\n', ' ');
         }
 
+        public static string CaminhoArquivoLog(string assembly)
+        {
+            caminhoExe = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location);
+            string nomeArquivo = DateTime.Now.Date.ToString("yyyyMMdd - ") + assembly + ".log";
+            return Path.Combine(caminhoExe, nomeArquivo);
+        }
+
         public static void GravarLog(string mensagem)
         {
             try
             {
-                caminhoExe = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                string nomeArquivo = DateTime.Now.Date.ToString("yyyyMMdd - ") + Assembly.GetExecutingAssembly().GetName().Name + ".log";
-                string caminhoArquivo = Path.Combine(caminhoExe, nomeArquivo);
+                string caminhoArquivo = CaminhoArquivoLog(Assembly.GetCallingAssembly().GetName().Name);
                 if (!File.Exists(caminhoArquivo))
                 {
                     FileStream arquivo = File.Create(caminhoArquivo);
