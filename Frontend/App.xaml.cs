@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Frontend.Login.View;
+using System.Windows;
 
 namespace Frontend
 {
@@ -7,6 +8,10 @@ namespace Frontend
     /// </summary>
     public partial class App : Application
     {
-
+        private void Inicializacao(object sender, StartupEventArgs e)
+        {
+            TelaLogin login = new TelaLogin();
+            login.Show();
+        }
     }
 }
