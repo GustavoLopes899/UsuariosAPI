@@ -1,5 +1,4 @@
 ﻿using Backend.Models;
-using Backend.Util;
 using Ferramentas;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -18,7 +17,7 @@ namespace Backend.Controllers
         private readonly ILogger logger;
 
         /// <summary>
-        /// Construtor da classe <see cref="UsuarioController"/>
+        /// Construtor da classe <see cref="DependentesController"/>
         /// </summary>
         /// <param name="contexto">Contexto utlizado para comunicação com o banco de dados</param>
         /// <param name="logger">Parâmetro utilizado para gerenciar arquivo de logs</param>

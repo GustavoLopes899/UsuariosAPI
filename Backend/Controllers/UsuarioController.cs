@@ -1,5 +1,4 @@
 ﻿using Backend.Models;
-using Backend.Util;
 using Ferramentas;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -121,7 +120,7 @@ namespace Backend.Controllers
         }
 
         /// <summary>
-        /// Editar permissão existente no sistema
+        /// Editar usuário existente no sistema
         /// </summary>
         /// <remarks>
         /// É importante ressaltar que não será possível editar o CPF do usuário, porém ele deve ser passado no body da requisição.

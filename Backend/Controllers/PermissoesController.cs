@@ -1,6 +1,6 @@
 ﻿using Backend.Models;
-using Backend.Util;
 using Ferramentas;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -41,6 +41,31 @@ namespace Backend.Controllers
         {
             this.logger.LogDebug("Listando todas permissões:");
             return this.contexto.Permissoes;
+        }
+
+        /// <summary>
+        /// Busca uma permissão do sistema
+        /// </summary>
+        /// <param name="nome">Nome da permissão que será buscada</param>
+        /// <returns></returns>
+        /// <response code="200">Retorna a permissão buscada</response>
+        /// <response code="401">Acesso não autorizado</response>
+        /// <response code="404">Permissão não encontrada</response>
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("buscar")]
+        [AuthorizeByRole(new string[] { Constantes.Administrador })]
+        public IActionResult BuscarPermissao([FromQuery] string nome)
+        {
+            Permissoes permissao = this.contexto.Permissoes.FirstOrDefault(u => u.Nome.Equals(nome));
+            if (permissao != null)
+            {
+                return this.Ok(permissao);
+            }
+            else
+            {
+                return this.NotFound("Permissão não encontrada!");
+            }
         }
 
         /// <summary>

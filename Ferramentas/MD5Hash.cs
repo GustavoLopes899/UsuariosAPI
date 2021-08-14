@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Frontend.Propriedades.Util
+namespace Ferramentas
 {
     public static class MD5Hash
     {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Backend.Models
 {
@@ -17,9 +18,10 @@ namespace Backend.Models
         [Column("ATIVO")]
         public bool Ativo { get; set; }
 
+        [JsonIgnore]
         [ForeignKey(nameof(Permissao))]
         [Column("COD_PERMISSAO")]
-        public int CodPermissao { get; set; }
+        public int? CodPermissao { get; set; }
 
         public Permissoes Permissao { get; set; }
 

@@ -46,7 +46,7 @@ create table CADASTRADORES(
     USUARIO varchar(100) constraint NN_CADAST_USUARIO not null,
     SENHA varchar(100) constraint NN_CADAST_SENHA not null,
 	ATIVO number(1) default 1 constraint NN_CADAST_ATIVO not null,
-	COD_PERMISSAO integer constraint NN_CADAST_CODPERMISSAO not null,
+	COD_PERMISSAO integer,
 	DATA_CRIACAO date constraint NN_CADAST_DTCRIACAO not null,
 	DATA_ALTERACAO date constraint NN_CADAST_DTALTERACAO not null,
     constraint PK_CADASTRADORES primary key (USUARIO),
