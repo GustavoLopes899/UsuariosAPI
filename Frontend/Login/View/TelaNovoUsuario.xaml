@@ -10,18 +10,42 @@
     <Window.Background>
         <ImageBrush ImageSource="/Frontend;component/Propriedades/Imagens/Fundo.png"/>
     </Window.Background>
-    <Grid>
+    <Grid Style="{StaticResource GridMenuLogin}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"/>
             <RowDefinition Height="0.3*"/>
-            <RowDefinition Height="0.3*"/>
-            <RowDefinition Height="0.3*"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="0.16*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.3*"/>
-                <RowDefinition Height="0.3*"/>
-                <RowDefinition Height="0.3*"/>
+                <RowDefinition Height="0.15*"/>
+                <RowDefinition Height="0.5*"/>
             </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="Novo Usuário" Margin="15,0,0,0" FontSize="30"/>
+            <Grid Grid.Row="1" Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.3*"/>
+                    <RowDefinition Height="0.3*"/>
+                    <RowDefinition Height="0.3*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="AUTO"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="AUTO"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Usuário:" FontSize="15" HorizontalAlignment="Right"/>
+                <TextBox x:Name="tbUsuario" Grid.Row="0" Grid.Column="1"/>
+                <Image Grid.Row="0" Grid.Column="2" Height="35" Source="/Frontend;component/Propriedades/Imagens/Ajuda.png"
+                       ToolTip="O nome de usuário deve conter pelo menos 8 caracteres com apenas letras e números"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Senha:" FontSize="15" HorizontalAlignment="Right"/>
+                <PasswordBox x:Name="pbSenha" Grid.Row="1" Grid.Column="1"/>
+                <Image Grid.Row="1" Grid.Column="2" Height="35" Source="/Frontend;component/Propriedades/Imagens/Ajuda.png"
+                       ToolTip="A senha deve conter pelo menos 7 caracteres"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Confirmar:" FontSize="15" HorizontalAlignment="Right"/>
+                <PasswordBox x:Name="pbConfirmaSenha" Grid.Row="2" Grid.Column="1"/>
+            </Grid>
         </Grid>
+        <Button Grid.Row="2" Content="Cadastrar" Width="150" Margin="0,5,0,5" Click="SalvarNovoUsuario"/>
     </Grid>
 </Window>

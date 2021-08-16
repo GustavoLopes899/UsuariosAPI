@@ -26,5 +26,7 @@ namespace Frontend.Program.Sessao
         public static HttpClient Cliente => httpClient;
 
         public static string UrlAutenticacao => url + "/login/autenticar";
+
+        public static string UrlAdicionarCadastrador => url + "/cadastrador/adicionar";
     }
 }

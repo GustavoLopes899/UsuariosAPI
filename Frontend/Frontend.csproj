@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Propriedades\Imagens\Ajuda.png" />
     <Resource Include="Propriedades\Imagens\Fundo.png" />
     <Resource Include="Propriedades\Imagens\Senha.png" />
     <Resource Include="Propriedades\Imagens\Usuario.png" />
