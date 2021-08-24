@@ -27,6 +27,22 @@ namespace Frontend.Program.Sessao
 
         public static string UrlAutenticacao => url + "/login/autenticar";
 
+        public static string UrlStatus => url + "/conta/status";
+
         public static string UrlAdicionarCadastrador => url + "/cadastrador/adicionar";
+
+        #region Usuários
+        public static string UrlUsuarioBuscar => url + "/usuario/buscar";
+
+        public static string UrlUsuarioAdicionar => url + "/usuario/adicionar";
+
+        public static string UrlUsuarioEditar => url + "/usuario/editar";
+
+        public static string UrlUsuarioRemover => url + "/usuario/remover";
+
+        public static string UrlBuscarDependentes => url + "/usuario/dependentes";
+        #endregion
+
+
     }
 }

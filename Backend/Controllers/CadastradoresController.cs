@@ -135,7 +135,7 @@ namespace Backend.Controllers
                 }
                 else
                 {
-                    mensagem = "Usuário já existe";
+                    mensagem = "O usuário informado já existe, tente novamente...";
                 }
                 return this.BadRequest(new { mensagem });
             }

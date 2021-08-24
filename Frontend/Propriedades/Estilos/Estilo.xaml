@@ -58,4 +58,51 @@
             </Style>
         </Style.Resources>
     </Style>
+
+    <Style x:Key="GridJanelaPrincipal" TargetType="Grid">
+        <Setter Property="Background" Value="{StaticResource CorFundoJanelaPrincipal}"/>
+        <Style.Resources>
+            <!--Arrumar botões depois-->
+            <Style TargetType="Button" BasedOn="{StaticResource BotaoGeral}">
+                <Setter Property="Foreground" Value="#FFFFFF"/>
+                <Setter Property="Background" Value="{StaticResource CorFundo}"/>
+                <Setter Property="BorderThickness" Value="0.5"/>
+                <Setter Property="BorderBrush" Value="Black"/>
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Margin" Value="5,2,0,2"/>
+                <Setter Property="FontSize" Value="15"/>
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Background" Value="#67b2e4"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style TargetType="TextBlock">
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="Foreground" Value="#FFFFFF"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+            <Style TargetType="CheckBox">
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="Foreground" Value="#FFFFFF"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="Foreground" Value="{StaticResource CorFundo}"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="FontSize" Value="15"/>
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+            </Style>
+            <Style TargetType="ComboBox">
+                <Setter Property="FontSize" Value="15"/>
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+            </Style>
+        </Style.Resources>
+    </Style>
 </ResourceDictionary>

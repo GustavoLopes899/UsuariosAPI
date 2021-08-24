@@ -3,11 +3,95 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:masked="clr-namespace:Frontend.Propriedades.WPF"
         xmlns:vm="clr-namespace:Frontend.JanelaPrincipal.VM"
         mc:Ignorable="d"
         Title="Cadastro de Usuários" Height="600" Width="900"
         d:DataContext="{d:DesignInstance Type=vm:JanelaPrincipalVM }">
-    <Grid>
-        
+    <Grid Style="{StaticResource GridJanelaPrincipal}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="AUTO"/>
+            <RowDefinition Height="AUTO"/>
+            <RowDefinition Height="AUTO"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="{StaticResource CorFundo}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="AUTO"/>
+                <ColumnDefinition Width="AUTO"/>
+                <ColumnDefinition Width="AUTO"/>
+                <ColumnDefinition Width="AUTO"/>
+                <ColumnDefinition Width="AUTO"/>
+                <ColumnDefinition Width="AUTO"/>
+                <ColumnDefinition Width="AUTO"/>
+                <ColumnDefinition Width="AUTO"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Usuário:" Margin="5" Foreground="#FFFFFF"/>
+            <TextBlock Grid.Column="1" Text="{Binding InfoUsuario.Usuario}" Margin="0,5,5,5" Foreground="#FFFFFF"/>
+            <TextBlock Grid.Column="2" Text="Permissões:" Margin="20,5,5,5"/>
+            <CheckBox Grid.Column="3" IsChecked="{Binding InfoUsuario.Permissao.Criar}" IsEnabled="False" Margin="5">Criar</CheckBox>
+            <CheckBox Grid.Column="4" IsChecked="{Binding InfoUsuario.Permissao.Ler}" IsEnabled="False" Margin="5">Ler</CheckBox>
+            <CheckBox Grid.Column="5" IsChecked="{Binding InfoUsuario.Permissao.Atualizar}" IsEnabled="False" Margin="5">Atualizar</CheckBox>
+            <CheckBox Grid.Column="6" IsChecked="{Binding InfoUsuario.Permissao.Deletar}" IsEnabled="False" Margin="5">Deletar</CheckBox>
+            <CheckBox Grid.Column="7" IsChecked="{Binding InfoUsuario.Permissao.Administrador}" IsEnabled="False" Margin="5">Administrador</CheckBox>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="AUTO"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Buscar usuário (CPF):"/>
+            <masked:MaskedTextBox x:Name="mtbBusca" Grid.Column="1" Margin="0,5,0,5" FontSize="15" Mask="000\.000\.000-00" IsEnabled="{Binding PodeBuscar}"
+                                  Text="{Binding BuscaCPF}"/>
+            <Button Grid.Column="2" Content="Buscar" Command="{Binding ComandoBuscar}" CommandParameter="{Binding Text, ElementName=mtbBusca}"/>
+            <Button Grid.Column="3" Content="Limpar" Click="Limpar_Click" Command="{Binding ComandoLimpar}"/>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.3*"/>
+                <ColumnDefinition Width="0.3*"/>
+                <ColumnDefinition Width="0.3*"/>
+                <ColumnDefinition Width="0.3*"/>
+                <ColumnDefinition Width="0.3*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="Salvar" Click="Salvar_Click" IsEnabled="{Binding PodeSalvarCancelar}" Command="{Binding ComandoSalvar}"/>
+            <Button Grid.Column="1" Content="Adicionar" IsEnabled="{Binding PodeAdicionar}" Command="{Binding ComandoAdicionar}"/>
+            <Button Grid.Column="2" Content="Editar" IsEnabled="{Binding PodeEditarDeletar}" Command="{Binding ComandoEditar}"/>
+            <Button Grid.Column="3" Content="Deletar" IsEnabled="{Binding PodeEditarDeletar}" Command="{Binding ComandoDeletar}"/>
+            <Button Grid.Column="4" Content="Cancelar" IsEnabled="{Binding PodeSalvarCancelar}" Command="{Binding ComandoCancelar}"/>
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="AUTO"/>
+                <ColumnDefinition Width="AUTO"/>
+                <ColumnDefinition Width="AUTO"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="CPF:"/>
+            <masked:MaskedTextBox x:Name="tbCPF" Grid.Row="0" Grid.Column="1" Text="{Binding Usuario.CPF}" IsEnabled="{Binding NovoUsuario}" Margin="5"
+                                  FontSize="15" Mask="000\.000\.000-00" />
+            <CheckBox x:Name="cbAtivo" Grid.Row="0" Grid.Column="2" IsChecked="{Binding Usuario.Ativo}" IsEnabled="{Binding EmEdicao}"
+                      Foreground="{StaticResource CorFundo}"  FontSize="15">Ativo</CheckBox>
+            <Label Grid.Row="1" Grid.Column="0" Content="Nome:"/>
+            <TextBox x:Name="tbNome" Grid.Row="1" Grid.Column="1" Width="250" IsEnabled="{Binding EmEdicao}" Text="{Binding Usuario.Nome}"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="Dependentes:"/>
+            <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Dependentes}" IsEnabled="{Binding EmEdicao}" DisplayMemberPath="CPF"/>
+            <Label Grid.Row="3" Grid.Column="0" Content="Data Criação:"/>
+            <TextBox x:Name="tbDataCriacao" Grid.Row="3" Grid.Column="1" Width="250" IsEnabled="false" Text="{Binding Usuario.DataCriacao, StringFormat=dd/MM/yyyy}"/>
+            <Label Grid.Row="4" Grid.Column="0" Content="Data Alteração:"/>
+            <TextBox x:Name="tbDataAlteracao" Grid.Row="4" Grid.Column="1" Width="250" IsEnabled="false" Text="{Binding Usuario.DataAlteracao, StringFormat=dd/MM/yyyy}"/>
+        </Grid>
     </Grid>
 </Window>

@@ -46,6 +46,6 @@
                 <PasswordBox x:Name="pbConfirmaSenha" Grid.Row="2" Grid.Column="1"/>
             </Grid>
         </Grid>
-        <Button Grid.Row="2" Content="Cadastrar" Width="150" Margin="0,5,0,5" Click="SalvarNovoUsuario"/>
+        <Button Grid.Row="2" Content="Cadastrar" Width="150" Margin="0,5,0,5" Click="SalvarNovoUsuario" IsDefault="True"/>
     </Grid>
 </Window>

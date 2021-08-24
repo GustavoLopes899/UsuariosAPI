@@ -35,7 +35,7 @@
             <Image Grid.Row="1" Grid.Column="0" Source="/Frontend;component/Propriedades/Imagens/Senha.png"/>
             <PasswordBox x:Name="pbSenha" Grid.Row="1" Grid.Column="1"/>
         </Grid>
-        <Button Grid.Row="4" Content="Entrar" Margin="30,5,30,5" Click="FazerLogin"/>
+        <Button Grid.Row="4" Content="Entrar" Margin="30,5,30,5" Click="FazerLogin" IsDefault="True"/>
         <TextBlock Grid.Row="6" HorizontalAlignment="Center">
             <Hyperlink Click="AbrirJanelaNovoUsuario">
                 <TextBlock Text="Ainda não tem cadastro, clique aqui"/>
